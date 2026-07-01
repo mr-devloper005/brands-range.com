@@ -1,57 +1,70 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowUpRight } from 'lucide-react'
 import { SITE_CONFIG } from '@/lib/site-config'
 import { globalContent } from '@/editable/content/global.content'
 import { useEditableLocalAuthSession } from '@/editable/components/EditableLocalAuthForms'
 
+const hiddenTasks = new Set(['classified', 'profile'])
+
 export function EditableFooter() {
-  const taskLinks = SITE_CONFIG.tasks.filter((task) => task.enabled)
   const year = new Date().getFullYear()
   const { session, logout } = useEditableLocalAuthSession()
 
   return (
     <footer className="border-t border-[var(--editable-border)] bg-[var(--editable-footer-bg)] text-[var(--editable-footer-text)]">
-      <div className="h-[2px] bg-[linear-gradient(90deg,transparent_0%,var(--slot4-accent)_50%,transparent_100%)]" />
-      <div className="mx-auto grid max-w-[var(--editable-container)] gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.2fr_1fr_1fr] lg:px-8">
-        <div>
-          <Link href="/" className="inline-flex items-center gap-3">
-            <span className="flex h-11 w-11 items-center justify-center border border-[var(--slot4-accent)]/40 bg-[var(--slot4-surface-bg)]">
-              <img src="/favicon.png?v=20260413" alt={SITE_CONFIG.name} className="h-8 w-8 object-contain" />
-            </span>
-            <span className="editable-display text-xl font-semibold tracking-[0.01em]">{SITE_CONFIG.name}</span>
+      <section className="bg-[#667089] text-white">
+        <div className="mx-auto flex max-w-[var(--editable-container)] flex-col items-center justify-between gap-5 px-4 py-10 sm:px-6 md:flex-row lg:px-8">
+          <div>
+            <p className="editable-display text-4xl font-semibold tracking-[-0.04em]">Post your ad now</p>
+            <p className="mt-2 text-sm text-white/80">Reach business owners, local buyers, and professionals in one place.</p>
+          </div>
+          <Link
+            href="/create"
+            className="inline-flex min-w-[220px] items-center justify-center rounded-md bg-[var(--slot4-cta)] px-8 py-4 text-lg font-semibold text-white transition hover:bg-[var(--slot4-cta-strong)]"
+          >
+            Post your Ad
           </Link>
-          <p className="mt-4 max-w-md text-sm leading-7 text-[var(--slot4-muted-text)]">{globalContent.footer?.description || SITE_CONFIG.description}</p>
         </div>
+      </section>
 
-        <div>
-          <h3 className="text-[10px] font-semibold uppercase tracking-[0.26em] text-[var(--slot4-accent)]">Explore</h3>
-          <div className="mt-4 grid gap-2">
-            {taskLinks.map((task) => (
-              <Link key={task.key} href={task.route} className="inline-flex items-center gap-2 text-sm font-medium text-[var(--slot4-muted-text)] transition hover:text-[var(--slot4-page-text)]">
-                {task.label} <ArrowUpRight className="h-3.5 w-3.5" />
-              </Link>
-            ))}
+      <section className="border-y border-[var(--editable-border)]">
+        <div className="mx-auto grid max-w-[var(--editable-container)] gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[0.9fr_1fr_1fr] lg:px-8">
+          <div>
+            <Link href="/" className="inline-flex items-center gap-3">
+              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--slot4-accent)] text-white">
+                <img src="/favicon.png?v=20260413" alt={SITE_CONFIG.name} className="h-8 w-8 object-contain" />
+              </span>
+              <span className="editable-display text-[2rem] font-semibold tracking-[-0.04em]">{SITE_CONFIG.name}</span>
+            </Link>
+            <p className="mt-4 max-w-sm text-sm leading-7 text-[var(--slot4-muted-text)]">
+              {globalContent.footer?.description || SITE_CONFIG.description}
+            </p>
           </div>
-        </div>
 
-        <div>
-          <h3 className="text-[10px] font-semibold uppercase tracking-[0.26em] text-[var(--slot4-accent)]">Site</h3>
-          <div className="mt-4 grid gap-2">
-            {[
-              ['About', '/about'],
-              ['Contact', '/contact'],
-              ...(session ? [['Create', '/create']] : [['Login', '/login'], ['Sign up', '/signup']]),
-            ].map(([label, href]) => (
-              <Link key={href} href={href} className="text-sm font-medium text-[var(--slot4-muted-text)] transition hover:text-[var(--slot4-page-text)]">{label}</Link>
-            ))}
-            {session ? <button type="button" onClick={logout} className="text-left text-sm font-medium text-[var(--slot4-muted-text)] transition hover:text-[var(--slot4-page-text)]">Logout</button> : null}
-          </div>
+          {(globalContent.footer.columns || []).map((column) => (
+            <div key={column.title}>
+              <h4 className="text-[13px] font-semibold uppercase tracking-[0.22em] text-[var(--slot4-accent)]">{column.title}</h4>
+              <div className="mt-4 grid gap-3 text-sm">
+                {column.links.map((item) => (
+                  <Link key={item.href} href={item.href} className="text-[var(--slot4-muted-text)] transition hover:text-[var(--slot4-page-text)]">
+                    {item.label}
+                  </Link>
+                ))}
+                {column.title === 'Support' && session ? (
+                  <button type="button" onClick={logout} className="text-left text-[var(--slot4-muted-text)] transition hover:text-[var(--slot4-page-text)]">
+                    Logout
+                  </button>
+                ) : null}
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-      <div className="border-t border-[var(--editable-border)] px-4 py-5 text-center text-xs font-medium tracking-[0.12em] text-[var(--slot4-muted-text)]">
-        © {year} {SITE_CONFIG.name}. All rights reserved.
+      </section>
+
+      <div className="px-4 py-6 text-center text-xs leading-6 text-[var(--slot4-muted-text)]">
+        <p>Copyright {year} {SITE_CONFIG.name}. All rights reserved.</p>
+        <p className="mt-1">{globalContent.footer.bottomNote}</p>
       </div>
     </footer>
   )
