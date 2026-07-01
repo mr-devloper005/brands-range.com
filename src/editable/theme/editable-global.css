@@ -12,9 +12,7 @@
   Do not add data fetching, scripts, or route logic here.
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
-
-/* Per-task display + body typefaces (consumed via task-themes.ts). */
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&family=Syne:wght@500;600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@400;500;600;700&display=swap');
 
@@ -25,22 +23,12 @@ body {
 }
 
 .editable-site-root {
-  /* Yelp-style clean sans, used for both display and body. */
-  --editable-font-display: 'Inter', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
-  --editable-font-body: 'Inter', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
-  /* Premium easing curve used across every hover + transition. */
+  --editable-font-display: 'Cormorant Garamond', Georgia, serif;
+  --editable-font-body: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
   font-family: var(--editable-font-body);
 }
 
-/*
-  Site-wide premium motion.
-
-  1. Unify the easing of every existing transition/hover to one refined curve.
-  2. Add a smooth "post open" entry animation that replays on each navigation
-     (driven by EditablePageMotion remounting the content per route).
-  Durations stay defined per-component via Tailwind utilities.
-*/
 .editable-site-root *,
 .editable-site-root *::before,
 .editable-site-root *::after {
@@ -50,7 +38,7 @@ body {
 @keyframes editable-enter {
   from {
     opacity: 0;
-    transform: translate3d(0, 22px, 0);
+    transform: translate3d(0, 20px, 0);
   }
   to {
     opacity: 1;
@@ -58,8 +46,6 @@ body {
   }
 }
 
-/* The content region rises + fades on open; `backwards` clears the transform
-   afterwards so sticky sidebars keep working. */
 .editable-enter > * {
   animation: editable-enter 0.6s var(--ease-premium) backwards;
   will-change: transform, opacity;
@@ -69,6 +55,7 @@ body {
   .editable-enter > * {
     animation: none;
   }
+
   .editable-site-root *,
   .editable-site-root *::before,
   .editable-site-root *::after {
@@ -83,7 +70,7 @@ body {
 .editable-site-root h4,
 .editable-display {
   font-family: var(--editable-font-display);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 
 .editable-site-root p,
@@ -92,32 +79,77 @@ body {
 .editable-site-root button,
 .editable-site-root textarea,
 .editable-site-root label,
-.editable-site-root nav {
+.editable-site-root nav,
+.editable-site-root select {
   font-family: var(--editable-font-body);
 }
 
-::selection {
-  background: color-mix(in oklab, var(--slot4-accent-fill) 28%, transparent);
+.editable-site-root input,
+.editable-site-root textarea,
+.editable-site-root select {
   color: var(--slot4-page-text);
 }
 
-::-webkit-scrollbar-track {
-  background: color-mix(in oklab, var(--slot4-page-bg) 88%, black);
+.editable-site-root input::placeholder,
+.editable-site-root textarea::placeholder {
+  color: color-mix(in oklab, var(--slot4-muted-text) 92%, white);
 }
 
-::-webkit-scrollbar-thumb {
-  background: color-mix(in oklab, var(--slot4-accent) 45%, transparent);
-  border-radius: 999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in oklab, var(--slot4-accent) 68%, transparent);
+.editable-site-root img {
+  display: block;
 }
 
 .article-content h2 {
+  margin-top: 2rem;
   color: var(--slot4-accent);
+  font-size: clamp(1.6rem, 2vw, 2.25rem);
+  line-height: 1.1;
+}
+
+.article-content h3 {
+  margin-top: 1.5rem;
+  color: var(--slot4-page-text);
+  font-size: clamp(1.2rem, 1.5vw, 1.6rem);
+  line-height: 1.2;
+}
+
+.article-content p + p,
+.article-content ul + p,
+.article-content ol + p {
+  margin-top: 1rem;
 }
 
 .article-content a {
   color: var(--slot4-accent-fill);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, var(--slot4-accent-fill) 40%, transparent);
+  text-underline-offset: 0.18em;
+}
+
+.article-content ul,
+.article-content ol {
+  padding-left: 1.2rem;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--slot4-highlight) 65%, transparent);
+  color: var(--slot4-page-text);
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+}
+
+::-webkit-scrollbar-track {
+  background: color-mix(in oklab, var(--slot4-page-bg) 90%, white);
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--slot4-accent) 45%, transparent);
+  border: 2px solid color-mix(in oklab, var(--slot4-page-bg) 90%, white);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklab, var(--slot4-accent) 70%, transparent);
 }
