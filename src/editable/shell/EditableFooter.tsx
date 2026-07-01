@@ -5,8 +5,6 @@ import { SITE_CONFIG } from '@/lib/site-config'
 import { globalContent } from '@/editable/content/global.content'
 import { useEditableLocalAuthSession } from '@/editable/components/EditableLocalAuthForms'
 
-const hiddenTasks = new Set(['classified', 'profile'])
-
 export function EditableFooter() {
   const year = new Date().getFullYear()
   const { session, logout } = useEditableLocalAuthSession()
@@ -29,19 +27,7 @@ export function EditableFooter() {
       </section>
 
       <section className="border-y border-[var(--editable-border)]">
-        <div className="mx-auto grid max-w-[var(--editable-container)] gap-10 px-4 py-10 sm:px-6 lg:grid-cols-[0.9fr_1fr_1fr] lg:px-8">
-          <div>
-            <Link href="/" className="inline-flex items-center gap-3">
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--slot4-accent)] text-white">
-                <img src="/favicon.png?v=20260413" alt={SITE_CONFIG.name} className="h-8 w-8 object-contain" />
-              </span>
-              <span className="editable-display text-[2rem] font-semibold tracking-[-0.04em]">{SITE_CONFIG.name}</span>
-            </Link>
-            <p className="mt-4 max-w-sm text-sm leading-7 text-[var(--slot4-muted-text)]">
-              {globalContent.footer?.description || SITE_CONFIG.description}
-            </p>
-          </div>
-
+        <div className="mx-auto grid max-w-[var(--editable-container)] gap-10 px-4 py-10 sm:px-6 lg:grid-cols-2 lg:px-8">
           {(globalContent.footer.columns || []).map((column) => (
             <div key={column.title}>
               <h4 className="text-[13px] font-semibold uppercase tracking-[0.22em] text-[var(--slot4-accent)]">{column.title}</h4>

@@ -1,1 +1,1 @@
-export { EditableNavbar as Navbar } from '@/editable/shell/EditableNavbar'
+export { EditableNavbar as Navbar } from '../../editable/shell/EditableNavbar'

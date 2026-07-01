@@ -19,27 +19,8 @@ export function EditableNavbar() {
     []
   )
 
-  const utilityLinks = globalContent.nav.utilityLinks || []
-  const primaryAction = globalContent.nav.actions?.primary || { label: 'Post your ad', href: '/create' }
-
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--editable-border)] bg-[var(--editable-nav-bg)] text-[var(--editable-nav-text)] backdrop-blur-xl">
-      <div className="border-b border-[var(--editable-border)] bg-[var(--slot4-cream)]">
-        <div className="mx-auto flex min-h-[42px] w-full max-w-[var(--editable-container)] items-center justify-end gap-5 px-4 text-[12px] font-medium text-[var(--slot4-muted-text)] sm:px-6 lg:px-8">
-          {utilityLinks.map((item) => (
-            <Link key={item.href} href={item.href} className="hidden transition hover:text-[var(--slot4-page-text)] md:inline-flex">
-              {item.label}
-            </Link>
-          ))}
-          <Link
-            href={primaryAction.href}
-            className="inline-flex items-center rounded-md bg-[var(--slot4-cta)] px-4 py-2 font-semibold text-white transition hover:bg-[var(--slot4-cta-strong)]"
-          >
-            {primaryAction.label}
-          </Link>
-        </div>
-      </div>
-
       <nav className="mx-auto flex min-h-[78px] w-full max-w-[var(--editable-container)] items-center gap-4 px-4 sm:px-6 lg:px-8">
         <Link href="/" className="group flex shrink-0 items-center gap-3">
           <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--slot4-accent)] text-white shadow-[0_10px_26px_rgba(70,132,50,0.22)]">

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { EditableNavbar } from '@/editable/shell/EditableNavbar'
+import { EditableNavbar } from './EditableNavbar'
 import { EditableFooter } from '@/editable/shell/EditableFooter'
 import { EditablePageMotion } from '@/editable/shell/EditablePageMotion'
 import { editableDesignContract as dc } from '@/editable/layouts/design-contract'
