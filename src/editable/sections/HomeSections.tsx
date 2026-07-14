@@ -95,7 +95,7 @@ function RatingRow({ post }: { post: SitePost }) {
   )
 }
 
-export function EditableHomeHero({ primaryTask, posts, timeSections }: HomeSectionProps) {
+export function EditableHomeHero({ posts, timeSections }: HomeSectionProps) {
   const pool = safePosts(posts, timeSections)
   const heroImages = latestPostImages(pool)
   const taskLinks = SITE_CONFIG.tasks.filter((task) => task.enabled && !hiddenTasks.has(task.key)).slice(0, 6)
