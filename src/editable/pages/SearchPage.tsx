@@ -4,14 +4,11 @@ import { ArrowRight, Filter, Search } from 'lucide-react'
 import { buildPageMetadata } from '@/lib/seo'
 import { fetchSiteFeed } from '@/lib/site-connector'
 import { getPostTaskKey } from '@/lib/task-data'
-import { getMockPostsForTask } from '@/lib/mock-posts'
 import { SITE_CONFIG, type TaskKey } from '@/lib/site-config'
 import type { SitePost } from '@/lib/site-connector'
 import { EditableSiteShell } from '@/editable/shell/EditableSiteShell'
 import { pagesContent } from '@/editable/content/pages.content'
 import { Ads } from '@/lib/ads'
-
-const hiddenTasks = new Set(['classified', 'profile'])
 
 export const revalidate = 3
 
@@ -40,7 +37,6 @@ const matches = (post: SitePost, query: string, category: string, task: string) 
   const typeText = compactText(content.type)
   if (typeText === 'comment') return false
   const derivedTask = getPostTaskKey(post) || typeText
-  if (hiddenTasks.has(String(derivedTask || ''))) return false
   if (task && derivedTask !== task) return false
   const categoryText = compactText(content.category)
   const tagsText = compactText(Array.isArray(post.tags) ? post.tags.join(' ') : '')
@@ -106,9 +102,8 @@ export default async function SearchPage({
   const task = (resolved.task || '').trim().toLowerCase()
   const useMaster = resolved.master !== '0'
   const feed = await fetchSiteFeed(useMaster ? 1000 : 300, useMaster ? { fresh: true, category: category || undefined, task: task || undefined } : undefined)
-  const visibleTasks = SITE_CONFIG.tasks.filter((item) => item.enabled && !hiddenTasks.has(item.key))
-  const fallbackPosts = visibleTasks.flatMap((item) => getMockPostsForTask(item.key))
-  const posts = feed?.posts?.length ? feed.posts : fallbackPosts
+  const visibleTasks = SITE_CONFIG.tasks.filter((item) => item.enabled)
+  const posts = feed?.posts || []
   const results = posts.filter((post) => matches(post, normalized, category, task)).slice(0, normalized ? 80 : 36)
   const enabledTasks = visibleTasks
 
