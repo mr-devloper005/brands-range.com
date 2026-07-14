@@ -5,8 +5,6 @@ import { SITE_CONFIG } from '@/lib/site-config'
 import { globalContent } from '@/editable/content/global.content'
 import { useEditableLocalAuthSession } from '@/editable/components/EditableLocalAuthForms'
 
-const hiddenTasks = new Set(['classified', 'profile'])
-
 export function EditableFooter() {
   const year = new Date().getFullYear()
   const { session, logout } = useEditableLocalAuthSession()
